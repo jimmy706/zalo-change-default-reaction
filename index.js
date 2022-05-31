@@ -1,11 +1,18 @@
+const chatMessageIdsMap = new Map();
+const chatRoomIdsMap = new Map();
+
 function getReactionButtonAndChangeDefaultReact(chatMessage) {
   async function sendDefaultReaction(e) {
     e.preventDefault();
     e.stopPropagation(); // Stop the default behavior of clicking Zalo reaction icon
     let defaultReaction = "/-heart";
-    const data = await chrome.storage.sync.get("defaultReaction");
-    if (data) {
-      defaultReaction = data.defaultReaction;
+    try {
+      const data = await chrome.storage.sync.get("defaultReaction");
+      if (data) {
+        defaultReaction = data.defaultReaction;
+      }
+    } catch (err) {
+      console.log(err);
     }
     const defaultReactionIcon = [
       ...chatMessage.querySelectorAll(
@@ -18,13 +25,12 @@ function getReactionButtonAndChangeDefaultReact(chatMessage) {
       defaultReactionIcon.click();
     }
   }
-  const defaultReactionButton = chatMessage.querySelector(
-    ".msg-reaction-icon"
-  );
 
+  const defaultReactionButton = chatMessage.querySelector(".msg-reaction-icon");
   if (defaultReactionButton) {
     defaultReactionButton.addEventListener("click", sendDefaultReaction);
   }
+
 }
 
 function setDefaultReaction() {
@@ -44,9 +50,9 @@ function setDefaultReaction() {
   });
 }
 
-async function onMessageChatBoxClicked() {
+async function onMessageChatBoxClicked(e) {
+  const messageBox = e.target;
   // Add click event and sent default reaction
-  const chatMessageIdsMap = new Map();
   const chatMessages = await new Promise(function (resolve, reject) {
     setTimeout(() => {
       const chatMessages = Array.from(
@@ -57,12 +63,16 @@ async function onMessageChatBoxClicked() {
       } else {
         reject(null);
       }
-    }, 1000);
+    }, 500);
+
+    messageBox.removeEventListener("click", onMessageChatBoxClicked);
   });
 
   chatMessages.forEach((chatMessage) => {
-    chatMessageIdsMap.set(chatMessage.id, chatMessage);
-    getReactionButtonAndChangeDefaultReact(chatMessage);
+    if (!chatMessageIdsMap.has(chatMessage.id)) {
+      chatMessageIdsMap.set(chatMessage.id, chatMessage);
+      getReactionButtonAndChangeDefaultReact(chatMessage);
+    }
   });
 
   // Continuely query new messages comming and set default reaction to it
@@ -74,12 +84,13 @@ async function onMessageChatBoxClicked() {
       const newChatMessages = domChatMessages.filter(
         (chatMessage) => !chatMessageIdsMap.has(chatMessage.id)
       ); // Check if message has already set default reaction
+
       newChatMessages.forEach((chatMessage) => {
         chatMessageIdsMap.set(chatMessage.id, chatMessage);
         getReactionButtonAndChangeDefaultReact(chatMessage);
       });
     }
-  }, 200);
+  }, 400);
 }
 
 setDefaultReaction();
