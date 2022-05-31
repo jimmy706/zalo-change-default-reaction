@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+body, html {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+    padding: 15px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 5px;
+}
+
+.reaction-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.reaction-list__item {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 5px;
+}
+
+.reaction-list .reaction-list__item:first-child, .reaction-list .reaction-list__item:last-child {
+    margin: 0!important;
+}
+
+.reaction-list__checked {
+    display: none;
+}
+
+.reaction-list__checked:checked + .reaction-list__icon {
+    outline: auto;
+    outline-color: black;
+}
+
+.reaction-list__icon {
+    display: block;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.reaction-list__icon span {
+    display: block;
+    width: 20px;
+    height: 20px;
+}

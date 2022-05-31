@@ -1,0 +1,19 @@
+{
+  "name": "Change default reaction",
+  "description": "",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "content_scripts": [
+      {
+          "matches": ["https://chat.zalo.me/*"],
+          "js": ["index.js"]
+      }
+  ]
+}
