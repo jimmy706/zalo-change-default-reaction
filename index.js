@@ -3,8 +3,7 @@ const chatRoomIdsMap = new Map();
 
 function getReactionButtonAndChangeDefaultReact(chatMessage) {
   async function sendDefaultReaction(e) {
-    e.preventDefault();
-    e.stopPropagation(); // Stop the default behavior of clicking Zalo reaction icon
+    e.stopPropagation(); // Stop the bubling of event
     let defaultReaction = "/-heart";
     try {
       const data = await chrome.storage.sync.get("defaultReaction");
@@ -12,7 +11,7 @@ function getReactionButtonAndChangeDefaultReact(chatMessage) {
         defaultReaction = data.defaultReaction;
       }
     } catch (err) {
-      console.log(err);
+      console.err(err);
     }
     const defaultReactionIcon = [
       ...chatMessage.querySelectorAll(
@@ -26,11 +25,10 @@ function getReactionButtonAndChangeDefaultReact(chatMessage) {
     }
   }
 
-  const defaultReactionButton = chatMessage.querySelector(".msg-reaction-icon");
+  const defaultReactionButton = chatMessage.querySelector(".msg-reaction-icon > .default-react-icon-thumb");
   if (defaultReactionButton) {
     defaultReactionButton.addEventListener("click", sendDefaultReaction);
   }
-
 }
 
 function setDefaultReaction() {
@@ -65,7 +63,7 @@ async function onMessageChatBoxClicked(e) {
       }
     }, 500);
 
-    messageBox.removeEventListener("click", onMessageChatBoxClicked);
+    messageBox.removeEventListener("click", onMessageChatBoxClicked); // Only listen 1 time
   });
 
   chatMessages.forEach((chatMessage) => {

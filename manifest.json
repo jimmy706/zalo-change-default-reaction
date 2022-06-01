@@ -7,13 +7,25 @@
     "service_worker": "worker.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/image/logo.png",
+      "32": "/image/logo.png",
+      "48": "/image/logo.png",
+      "128": "/image/logo.png"
+    }
   },
   "permissions": ["storage", "activeTab", "scripting", "tabs"],
   "content_scripts": [
-      {
-          "matches": ["https://chat.zalo.me/*"],
-          "js": ["index.js"]
-      }
-  ]
+    {
+      "matches": ["https://chat.zalo.me/*"],
+      "js": ["index.js"]
+    }
+  ],
+  "icons": {
+    "16": "/image/logo.png",
+    "32": "/image/logo.png",
+    "48": "/image/logo.png",
+    "128": "/image/logo.png"
+  }
 }
