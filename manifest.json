@@ -1,6 +1,6 @@
 {
-  "name": "Change default reaction",
-  "description": "",
+  "name": "Thay đổi reaction mặc định Zalo",
+  "description": "Thay đổi reaction mặc định cho Zalo web",
   "version": "1.0.0",
   "manifest_version": 3,
   "background": {
