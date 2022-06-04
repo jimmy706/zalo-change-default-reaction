@@ -59,21 +59,9 @@ function initAction(defaultReaction) {
     if (e.target.className.includes("reaction-list__checked")) {
       const defaultReaction = e.target.value;
       chrome.storage.sync.set({ defaultReaction });
-      // notifyDefaultReactionChangedToContentScript(defaultReaction);
     }
   });
 }
-
-// async function notifyDefaultReactionChangedToContentScript(newDefaultReaction) {
-//   const [tab] = await chrome.tabs.query({
-//     active: true,
-//     currentWindow: true,
-//     title: "Zalo Web",
-//   });
-//   if (tab) {
-//     chrome.tabs.sendMessage(tab.id, newDefaultReaction); // Notify content script new default reaction is set
-//   }
-// }
 
 
 let defaultReaction = "/-heart";
